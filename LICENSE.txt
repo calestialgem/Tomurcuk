@@ -1,4 +1,4 @@
-MIT License
+The MIT License (Expat)
 
 Copyright (c) 2025 Cem GEÇGEL <gecgelcem@outlook.com>
 
