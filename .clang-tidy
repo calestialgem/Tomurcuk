@@ -1,0 +1,15 @@
+# cSpell: disable
+Checks: "*\
+  ,-cppcoreguidelines-pro-type-vararg\
+  ,-fuchsia-trailing-return\
+  ,-google-readability-namespace-comments\
+  ,-hicpp-deprecated-headers\
+  ,-hicpp-named-parameter\
+  ,-hicpp-vararg\
+  ,-llvm-namespace-comment\
+  ,-llvmlibc-callee-namespace\
+  ,-llvmlibc-implementation-in-namespace\
+  ,-llvmlibc-restrict-system-libc-headers\
+  ,-modernize-deprecated-headers\
+  ,-readability-named-parameter\
+  "
