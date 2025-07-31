@@ -7,6 +7,8 @@ project(Tomurcuk)
 if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU") # cSpell: disable-line
     # cSpell: disable
     set(TRK_COMPILE_OPTIONS
+        "-fno-exceptions"
+        "-fno-rtti"
         "-std=gnu++2c"
         "-Weverything"
         "-Wno-c++98-compat"
