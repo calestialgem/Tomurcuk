@@ -1,15 +1,21 @@
 # cSpell: disable
 Checks: "*\
+  ,-android-cloexec-fopen\
+  ,-cppcoreguidelines-avoid-c-arrays\
+  ,-cppcoreguidelines-pro-bounds-array-to-pointer-decay\
   ,-cppcoreguidelines-pro-type-vararg\
   ,-fuchsia-trailing-return\
   ,-google-readability-namespace-comments\
+  ,-hicpp-avoid-c-arrays\
   ,-hicpp-deprecated-headers\
   ,-hicpp-named-parameter\
+  ,-hicpp-no-array-decay\
   ,-hicpp-vararg\
   ,-llvm-namespace-comment\
   ,-llvmlibc-callee-namespace\
   ,-llvmlibc-implementation-in-namespace\
   ,-llvmlibc-restrict-system-libc-headers\
+  ,-modernize-avoid-c-arrays\
   ,-modernize-deprecated-headers\
   ,-readability-make-member-function-const\
   ,-readability-named-parameter\

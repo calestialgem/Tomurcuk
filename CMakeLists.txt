@@ -12,6 +12,7 @@ if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU") # cSpell: disable-line
         "-std=gnu++2c"
         "-Weverything"
         "-Wno-c++98-compat"
+        "-Wno-deprecated-declarations"
         "-Wno-unsafe-buffer-usage-in-libc-call"
     )
     # cSpell: enable
