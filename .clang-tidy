@@ -5,6 +5,7 @@ Checks: "*\
   ,-cppcoreguidelines-pro-bounds-array-to-pointer-decay\
   ,-cppcoreguidelines-pro-type-vararg\
   ,-fuchsia-trailing-return\
+  ,-google-readability-casting\
   ,-google-readability-namespace-comments\
   ,-hicpp-avoid-c-arrays\
   ,-hicpp-deprecated-headers\

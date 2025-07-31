@@ -32,10 +32,17 @@ namespace trk {
          */
         auto format(char *buffer, size_t capacity) -> size_t;
 
+        /**
+         * Provides the error as a 32-bit integer.
+         *
+         * @return @ref mCode.
+         */
+        auto getCode() -> uint32_t;
+
     private:
         /**
-         * Code that represents the error.
+         * Integer that represents the error.
          */
-        int32_t mValue;
+        int mCode;
     };
 }

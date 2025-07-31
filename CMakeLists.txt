@@ -13,6 +13,7 @@ if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU") # cSpell: disable-line
         "-Weverything"
         "-Wno-c++98-compat"
         "-Wno-deprecated-declarations"
+        "-Wno-old-style-cast"
         "-Wno-unsafe-buffer-usage-in-libc-call"
     )
     # cSpell: enable
