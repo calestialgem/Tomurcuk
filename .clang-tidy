@@ -11,5 +11,6 @@ Checks: "*\
   ,-llvmlibc-implementation-in-namespace\
   ,-llvmlibc-restrict-system-libc-headers\
   ,-modernize-deprecated-headers\
+  ,-readability-make-member-function-const\
   ,-readability-named-parameter\
   "
