@@ -31,6 +31,7 @@ target_include_directories(trkLibrary
 )
 
 target_sources(trkLibrary PRIVATE
+    "${CMAKE_SOURCE_DIR}/sources/trk/Crashes.cpp"
     "${CMAKE_SOURCE_DIR}/sources/trk/Demo.cpp"
     "${CMAKE_SOURCE_DIR}/sources/trk/PrivateDemo.cpp"
 )
