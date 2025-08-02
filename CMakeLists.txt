@@ -4,7 +4,7 @@ project(Tomurcuk)
 #-------------------------------------------------------------------------------
 # Compiler configuration to be used
 
-if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU") # cSpell: disable-line
+if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
     # cSpell: disable
     set(TRK_COMPILE_OPTIONS
         "-fno-exceptions"
