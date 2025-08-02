@@ -39,6 +39,15 @@ target_sources(trkLibrary PRIVATE
     "${CMAKE_SOURCE_DIR}/sources/trk/StandardError.cpp"
 )
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    target_sources(trkLibrary PRIVATE
+        "${CMAKE_SOURCE_DIR}/sources/trk/windows/PlatformError.cpp"
+    )
+else()
+    message(FATAL_ERROR "Unsupported system name: ${CMAKE_SYSTEM_NAME}")
+endif()
+
+
 #-------------------------------------------------------------------------------
 # Tests for the library
 
