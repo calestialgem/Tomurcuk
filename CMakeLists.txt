@@ -6,7 +6,7 @@ project(Tomurcuk)
 
 if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
     # cSpell: disable
-    set(TRK_COMPILE_OPTIONS
+    set(TOMURCUK_COMPILE_OPTIONS
         "-fno-exceptions"
         "-fno-rtti"
         "-std=gnu++2c"
@@ -25,15 +25,15 @@ endif()
 #-------------------------------------------------------------------------------
 # The library
 
-add_library(trkLibrary)
-target_compile_options(trkLibrary PRIVATE ${TRK_COMPILE_OPTIONS})
+add_library(tomurcukLibrary)
+target_compile_options(tomurcukLibrary PRIVATE ${TOMURCUK_COMPILE_OPTIONS})
 
-target_include_directories(trkLibrary
+target_include_directories(tomurcukLibrary
     PRIVATE "${CMAKE_SOURCE_DIR}/privateHeaders"
     PUBLIC "${CMAKE_SOURCE_DIR}/publicHeaders"
 )
 
-target_sources(trkLibrary PRIVATE
+target_sources(tomurcukLibrary PRIVATE
     "${CMAKE_SOURCE_DIR}/sources/trk/Crashes.cpp"
     "${CMAKE_SOURCE_DIR}/sources/trk/Demo.cpp"
     "${CMAKE_SOURCE_DIR}/sources/trk/PrivateDemo.cpp"
@@ -41,7 +41,7 @@ target_sources(trkLibrary PRIVATE
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_sources(trkLibrary PRIVATE
+    target_sources(tomurcukLibrary PRIVATE
         "${CMAKE_SOURCE_DIR}/sources/trk/windows/PlatformError.cpp"
     )
 else()
@@ -52,9 +52,9 @@ endif()
 #-------------------------------------------------------------------------------
 # Tests for the library
 
-add_executable(trkTestExecutable EXCLUDE_FROM_ALL
+add_executable(tomurcukTestExecutable EXCLUDE_FROM_ALL
     "${CMAKE_SOURCE_DIR}/sources/trkTest/main.cpp"
 )
 
-target_compile_options(trkTestExecutable PRIVATE ${TRK_COMPILE_OPTIONS})
-target_link_libraries(trkTestExecutable PRIVATE trkLibrary)
+target_compile_options(tomurcukTestExecutable PRIVATE ${TOMURCUK_COMPILE_OPTIONS})
+target_link_libraries(tomurcukTestExecutable PRIVATE tomurcukLibrary)
