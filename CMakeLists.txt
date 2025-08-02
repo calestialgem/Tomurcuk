@@ -12,8 +12,10 @@ if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
         "-std=gnu++2c"
         "-Weverything"
         "-Wno-c++98-compat"
+        "-Wno-c++98-compat-pedantic"
         "-Wno-deprecated-declarations"
         "-Wno-old-style-cast"
+        "-Wno-unsafe-buffer-usage"
         "-Wno-unsafe-buffer-usage-in-libc-call"
         "-Wno-writable-strings"
     )
