@@ -50,6 +50,9 @@ namespace tomurcuk {
          * If the handler does not terminate, `abort` will be called.
          *
          * @warning Must be reentrant if it might call @ref crash recursively.
+         *
+         * @warning Must be synchronized if multiple threads might call
+         * @ref crash.
          */
         static void (*sCrashHandler)();
 
