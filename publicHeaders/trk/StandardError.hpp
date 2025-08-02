@@ -43,6 +43,6 @@ namespace trk {
         /**
          * Integer that represents the error.
          */
-        int mCode;
+        uint32_t mCode;
     };
 }
