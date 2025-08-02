@@ -34,15 +34,15 @@ target_include_directories(tomurcukLibrary
 )
 
 target_sources(tomurcukLibrary PRIVATE
-    "${CMAKE_SOURCE_DIR}/sources/trk/Crashes.cpp"
-    "${CMAKE_SOURCE_DIR}/sources/trk/Demo.cpp"
-    "${CMAKE_SOURCE_DIR}/sources/trk/PrivateDemo.cpp"
-    "${CMAKE_SOURCE_DIR}/sources/trk/StandardError.cpp"
+    "${CMAKE_SOURCE_DIR}/sources/tomurcuk/Crashes.cpp"
+    "${CMAKE_SOURCE_DIR}/sources/tomurcuk/Demo.cpp"
+    "${CMAKE_SOURCE_DIR}/sources/tomurcuk/PrivateDemo.cpp"
+    "${CMAKE_SOURCE_DIR}/sources/tomurcuk/StandardError.cpp"
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     target_sources(tomurcukLibrary PRIVATE
-        "${CMAKE_SOURCE_DIR}/sources/trk/windows/PlatformError.cpp"
+        "${CMAKE_SOURCE_DIR}/sources/tomurcuk/windows/PlatformError.cpp"
     )
 else()
     message(FATAL_ERROR "Unsupported system name: ${CMAKE_SYSTEM_NAME}")
@@ -53,7 +53,7 @@ endif()
 # Tests for the library
 
 add_executable(tomurcukTestExecutable EXCLUDE_FROM_ALL
-    "${CMAKE_SOURCE_DIR}/sources/trkTest/main.cpp"
+    "${CMAKE_SOURCE_DIR}/sources/tomurcukTest/main.cpp"
 )
 
 target_compile_options(tomurcukTestExecutable PRIVATE ${TOMURCUK_COMPILE_OPTIONS})

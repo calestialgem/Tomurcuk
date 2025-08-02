@@ -1,9 +1,9 @@
 #include <inttypes.h>
 #include <stdio.h>
-#include <trk/Crashes.hpp>
-#include <trk/Demo.hpp>
-#include <trk/PlatformError.hpp>
-#include <trk/StandardError.hpp>
+#include <tomurcuk/Crashes.hpp>
+#include <tomurcuk/Demo.hpp>
+#include <tomurcuk/PlatformError.hpp>
+#include <tomurcuk/StandardError.hpp>
 
 auto main(int, char **) -> int {
     if (fopen("some/invalid/path", "r") == nullptr) {

@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <trk/Crashes.hpp>
+#include <tomurcuk/Crashes.hpp>
 
 auto trk::Crashes::crash() -> void {
     if (sCrashHandler != nullptr) {

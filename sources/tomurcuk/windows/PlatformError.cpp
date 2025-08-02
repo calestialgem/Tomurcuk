@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <trk/PlatformError.hpp>
-#include <trk/windows/Windows.hpp>
+#include <tomurcuk/PlatformError.hpp>
+#include <tomurcuk/windows/Windows.hpp>
 
 auto trk::PlatformError::getCurrent() -> PlatformError {
     auto result = PlatformError{};
