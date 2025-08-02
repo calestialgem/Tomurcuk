@@ -15,6 +15,7 @@ if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU") # cSpell: disable-line
         "-Wno-deprecated-declarations"
         "-Wno-old-style-cast"
         "-Wno-unsafe-buffer-usage-in-libc-call"
+        "-Wno-writable-strings"
     )
     # cSpell: enable
 else()

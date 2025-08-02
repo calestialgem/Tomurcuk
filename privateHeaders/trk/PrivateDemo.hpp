@@ -11,6 +11,6 @@ namespace trk {
          *
          * @return A pointer to a null-terminated string.
          */
-        static auto message() -> char const *;
+        static auto message() -> char *;
     };
 }
