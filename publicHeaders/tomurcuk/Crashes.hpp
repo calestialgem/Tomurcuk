@@ -29,6 +29,8 @@ namespace tomurcuk {
          * Might be `nullptr`, which will work the same as an empty function.
          *
          * If the handler does not terminate, `abort` will be called.
+         *
+         * @warning Must be reentrant if it might call @ref crash recursively.
          */
         static void (*sCrashHandler)();
     };
