@@ -1,6 +1,6 @@
 #pragma once
 
-namespace trk {
+namespace tomurcuk {
     /**
      * Handles unrecoverable errors.
      */

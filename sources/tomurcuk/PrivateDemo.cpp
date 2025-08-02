@@ -1,5 +1,5 @@
 #include <tomurcuk/PrivateDemo.hpp>
 
-auto trk::PrivateDemo::message() -> char * {
+auto tomurcuk::PrivateDemo::message() -> char * {
     return "Hello, Tomurcuk!";
 }

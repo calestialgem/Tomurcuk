@@ -1,15 +1,15 @@
 #include <stdlib.h>
 #include <tomurcuk/Crashes.hpp>
 
-auto trk::Crashes::crash() -> void {
+auto tomurcuk::Crashes::crash() -> void {
     if (sCrashHandler != nullptr) {
         sCrashHandler();
     }
     abort();
 }
 
-auto trk::Crashes::setCrashHandler(void (*crashHandler)()) -> void {
+auto tomurcuk::Crashes::setCrashHandler(void (*crashHandler)()) -> void {
     sCrashHandler = crashHandler;
 }
 
-void (*trk::Crashes::sCrashHandler)();
+void (*tomurcuk::Crashes::sCrashHandler)();

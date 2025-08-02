@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-namespace trk {
+namespace tomurcuk {
     /**
      * Error code from the C standard library.
      */

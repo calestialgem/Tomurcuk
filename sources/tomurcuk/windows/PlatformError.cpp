@@ -2,14 +2,14 @@
 #include <tomurcuk/PlatformError.hpp>
 #include <tomurcuk/windows/Windows.hpp>
 
-auto trk::PlatformError::getCurrent() -> PlatformError {
+auto tomurcuk::PlatformError::getCurrent() -> PlatformError {
     auto result = PlatformError{};
     static_assert(sizeof(DWORD) <= 4);
     result.mCode = (uint32_t)GetLastError();
     return result;
 }
 
-auto trk::PlatformError::format(char *buffer, uint64_t capacity) -> uint64_t {
+auto tomurcuk::PlatformError::format(char *buffer, uint64_t capacity) -> uint64_t {
     // `FormatMessage` takes a `DWORD`, make sure the capacity is limited to
     // that.
     uint32_t trimmedCapacity = UINT32_MAX;
@@ -54,6 +54,6 @@ auto trk::PlatformError::format(char *buffer, uint64_t capacity) -> uint64_t {
     return 0;
 }
 
-auto trk::PlatformError::getCode() -> uint32_t {
+auto tomurcuk::PlatformError::getCode() -> uint32_t {
     return mCode;
 }
