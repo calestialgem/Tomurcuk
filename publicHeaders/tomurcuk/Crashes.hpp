@@ -51,8 +51,8 @@ namespace tomurcuk {
          *
          * @warning Must be reentrant if it might call @ref crash recursively.
          *
-         * @warning Must be synchronized if multiple threads might call
-         * @ref crash.
+         * @warning Must be synchronized if @ref crash might be called
+         * concurrently.
          */
         static void (*sCrashHandler)();
 
