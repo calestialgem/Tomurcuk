@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stddef.h>
 #include <stdint.h>
 
 namespace trk {
@@ -30,7 +29,7 @@ namespace trk {
          * @return The amount of bytes that were written into `buffer`,
          * including the null-termination sentinel on success. Otherwise, zero.
          */
-        auto format(char *buffer, size_t capacity) -> size_t;
+        auto format(char *buffer, uint64_t capacity) -> uint64_t;
 
         /**
          * Provides the error as a 32-bit integer.

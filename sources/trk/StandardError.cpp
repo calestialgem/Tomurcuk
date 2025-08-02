@@ -1,5 +1,4 @@
 #include <errno.h>
-#include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 #include <trk/StandardError.hpp>
@@ -11,7 +10,7 @@ auto trk::StandardError::getCurrent() -> StandardError {
     return result;
 }
 
-auto trk::StandardError::format(char *buffer, size_t capacity) -> size_t {
+auto trk::StandardError::format(char *buffer, uint64_t capacity) -> uint64_t {
     if (strerror_s(buffer, capacity, (int)mCode) != 0) {
         return 0;
     }
