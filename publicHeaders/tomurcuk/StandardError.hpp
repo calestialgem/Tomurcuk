@@ -27,7 +27,7 @@ namespace tomurcuk {
          * @param[in] capacity The maximum amount of bytes that might be written
          * into `buffer`, including the null-termination sentinel.
          * @return The amount of bytes that were written into `buffer`,
-         * including the null-termination sentinel on success. Otherwise, zero.
+         * including the null-termination sentinel on success. On failure, zero.
          */
         auto format(char *buffer, uint64_t capacity) -> uint64_t;
 
