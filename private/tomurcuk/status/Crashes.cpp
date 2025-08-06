@@ -3,9 +3,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <tomurcuk/Crashes.hpp>
-#include <tomurcuk/PlatformError.hpp>
-#include <tomurcuk/StandardError.hpp>
+#include <tomurcuk/status/Crashes.hpp>
+#include <tomurcuk/status/PlatformError.hpp>
+#include <tomurcuk/status/StandardError.hpp>
 
 auto tomurcuk::Crashes::crash(char *format, ...) -> void {
     auto arguments = va_list{};

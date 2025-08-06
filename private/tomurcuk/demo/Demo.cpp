@@ -1,5 +1,6 @@
-#include <tomurcuk/Demo.hpp>
-#include <tomurcuk/PrivateDemo.hpp>
+#include "PrivateDemo.hpp"
+
+#include <tomurcuk/demo/Demo.hpp>
 
 auto tomurcuk::Demo::message() -> char * {
     return PrivateDemo::message();

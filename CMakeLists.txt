@@ -25,38 +25,96 @@ else()
 endif()
 
 #-------------------------------------------------------------------------------
+# Helper functions for defining targets
+
+function(tomurcukDefinePackage MODULE_NAME PACKAGE_NAME)
+    set(OPTIONS "")
+    set(ONE_VALUE_ARGS "")
+    set(MULTI_VALUE_ARGS SOURCES WINDOWS_SOURCES)
+    cmake_parse_arguments(PARSE "${OPTIONS}" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN}) # cSpell: disable-line
+
+    foreach(i ${MULTI_VALUE_ARGS})
+        if(NOT DEFINED PARSE_${i})
+            set(PARSE_${i})
+        endif()
+    endforeach()
+
+    if(PARSE_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR "Unknown arguments in tomurcukDefinePackage: ${PARSE_UNPARSED_ARGUMENTS}")
+    endif()
+
+    set(TARGET_NAME "package${MODULE_NAME}${PACKAGE_NAME}")
+    list(TRANSFORM PARSE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/private/${MODULE_NAME}/${PACKAGE_NAME}/")
+    list(TRANSFORM PARSE_WINDOWS_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/private/${MODULE_NAME}/${PACKAGE_NAME}/windows/")
+
+    if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        list(APPEND PARSE_SOURCES ${PARSE_WINDOWS_SOURCES})
+    else()
+        message(FATAL_ERROR "Unsupported system name: ${CMAKE_SYSTEM_NAME}")
+    endif()
+
+    if(PARSE_SOURCES)
+        add_library(${TARGET_NAME} EXCLUDE_FROM_ALL ${PARSE_SOURCES})
+        target_compile_options(${TARGET_NAME} PRIVATE ${TOMURCUK_COMPILE_OPTIONS})
+        target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/public")
+    else()
+        add_library(${TARGET_NAME} INTERFACE EXCLUDE_FROM_ALL)
+        target_include_directories(${TARGET_NAME} INTERFACE "${CMAKE_SOURCE_DIR}/public")
+    endif()
+endfunction()
+
+function(tomurcukDefineModule MODULE_NAME)
+    set(OPTIONS EXECUTABLE)
+    set(ONE_VALUE_ARGS "")
+    set(MULTI_VALUE_ARGS PACKAGES DEPENDENCIES)
+    cmake_parse_arguments(PARSE "${OPTIONS}" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN}) # cSpell: disable-line
+
+    foreach(i ${MULTI_VALUE_ARGS})
+        if(NOT DEFINED PARSE_${i})
+            set(PARSE_${i})
+        endif()
+    endforeach()
+
+    if(PARSE_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR "Unknown arguments in tomurcukDefineModule: ${PARSE_UNPARSED_ARGUMENTS}")
+    endif()
+
+    set(TARGET_NAME "module${MODULE_NAME}")
+    list(TRANSFORM PARSE_PACKAGES PREPEND "package${MODULE_NAME}")
+    list(TRANSFORM PARSE_DEPENDENCIES PREPEND "module")
+
+    if(PARSE_EXECUTABLE)
+        add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL "${CMAKE_SOURCE_DIR}/private/${MODULE_NAME}/main.cpp")
+        target_compile_options(${TARGET_NAME} PRIVATE ${TOMURCUK_COMPILE_OPTIONS})
+        target_link_libraries(${TARGET_NAME} PRIVATE ${PARSE_PACKAGES} ${PARSE_DEPENDENCIES})
+    else()
+        add_library(${TARGET_NAME} INTERFACE EXCLUDE_FROM_ALL)
+        target_link_libraries(${TARGET_NAME} INTERFACE ${PARSE_PACKAGES} ${PARSE_DEPENDENCIES})
+    endif()
+endfunction()
+
+#-------------------------------------------------------------------------------
 # The library
 
-add_library(tomurcukLibrary)
-target_compile_options(tomurcukLibrary PRIVATE ${TOMURCUK_COMPILE_OPTIONS})
+tomurcukDefinePackage(Tomurcuk Base)
 
-target_include_directories(tomurcukLibrary
-    PRIVATE "${CMAKE_SOURCE_DIR}/privateHeaders"
-    PUBLIC "${CMAKE_SOURCE_DIR}/publicHeaders"
+tomurcukDefinePackage(Tomurcuk Demo
+    SOURCES
+        "Demo.cpp"
+        "PrivateDemo.cpp"
 )
 
-target_sources(tomurcukLibrary PRIVATE
-    "${CMAKE_SOURCE_DIR}/sources/tomurcuk/Crashes.cpp"
-    "${CMAKE_SOURCE_DIR}/sources/tomurcuk/Demo.cpp"
-    "${CMAKE_SOURCE_DIR}/sources/tomurcuk/PrivateDemo.cpp"
-    "${CMAKE_SOURCE_DIR}/sources/tomurcuk/StandardError.cpp"
+tomurcukDefinePackage(Tomurcuk Status
+    SOURCES
+        "Crashes.cpp"
+        "StandardError.cpp"
+    WINDOWS_SOURCES
+        "PlatformError.cpp"
 )
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_sources(tomurcukLibrary PRIVATE
-        "${CMAKE_SOURCE_DIR}/sources/tomurcuk/windows/PlatformError.cpp"
-    )
-else()
-    message(FATAL_ERROR "Unsupported system name: ${CMAKE_SYSTEM_NAME}")
-endif()
-
+tomurcukDefineModule(Tomurcuk PACKAGES Base Demo Status)
 
 #-------------------------------------------------------------------------------
 # Tests for the library
 
-add_executable(tomurcukTestExecutable EXCLUDE_FROM_ALL
-    "${CMAKE_SOURCE_DIR}/sources/tomurcukTest/main.cpp"
-)
-
-target_compile_options(tomurcukTestExecutable PRIVATE ${TOMURCUK_COMPILE_OPTIONS})
-target_link_libraries(tomurcukTestExecutable PRIVATE tomurcukLibrary)
+tomurcukDefineModule(TomurcukTest EXECUTABLE DEPENDENCIES Tomurcuk)

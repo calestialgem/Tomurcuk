@@ -1,9 +1,6 @@
 #include <inttypes.h>
 #include <stdio.h>
-#include <tomurcuk/Crashes.hpp>
-#include <tomurcuk/Demo.hpp>
-#include <tomurcuk/PlatformError.hpp>
-#include <tomurcuk/StandardError.hpp>
+#include <tomurcuk/status/Crashes.hpp>
 
 auto main(int, char **) -> int {
     static constexpr char kPath[] = "some/invalid/path";

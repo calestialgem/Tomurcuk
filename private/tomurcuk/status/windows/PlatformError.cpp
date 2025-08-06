@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <tomurcuk/PlatformError.hpp>
-#include <tomurcuk/windows/Windows.hpp>
+#include <tomurcuk/base/windows/Windows.hpp>
+#include <tomurcuk/status/PlatformError.hpp>
 
 auto tomurcuk::PlatformError::getCurrent() -> PlatformError {
     auto result = PlatformError{};
