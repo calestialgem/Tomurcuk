@@ -37,7 +37,10 @@ Collection of general-purpose utilities.
   - All functions and global variables must be inside a type.
   - All function names must be in `camelCase`.
   - All local variable names must be in `camelCase`.
-  - All global variable names must be in `PascalCase` with a `g` prefix.
+  - All public global variable (static field) names must be in `PascalCase` with
+    a `g` prefix.
+  - All private global variable (static field) names must be in `PascalCase`
+    with a `s` prefix.
   - All constants must be in `PascalCase` with a `k` prefix.
   - All enum variants must be in `PascalCase` with an `e` prefix.
   - All macros must be in `SCREAMING_SNAKE_CASE` with an `MODULE_NAME_` prefix.
