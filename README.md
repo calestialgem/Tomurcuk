@@ -70,7 +70,7 @@ Collection of general-purpose utilities.
   - All `clang` extensions can be used.
   - All dependencies must be brought in via `FetchContent` of `CMake`.
   - All packages must have a `CMake` target named
-    `<moduleName>Package<PackageName>`.
-  - All modules must have a `CMake` target named `<ModuleName>Module`.
+    `package<ModuleName><PackageName>`.
+  - All modules must have a `CMake` target named `module<ModuleName>`.
   - All `CMake` variable names must be in `SCREAMING_SNAKE_CASE` with an
     `<MODULE_NAME>_` prefix.
