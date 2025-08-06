@@ -28,26 +28,36 @@ Collection of general-purpose utilities.
   - Allocators must not be stored in types.
   - All types must be trivially copyable.
 - Logical structure
-  - All functions and global variables must be inside a type.
-  - All types must be inside the namespace `tomurcuk`.
+  - Code is divided into modules, packages, and types.
+  - All module and package names must be in `camelCase`.
   - All type names must be in `PascalCase`.
+  - All types must be inside the namespace `<moduleName>`.
+  - All types must have a visibility out of `public` or `private`, which defines
+    whether they can be accessed from the outside of the owning package.
+  - All functions and global variables must be inside a type.
   - All function names must be in `camelCase`.
   - All local variable names must be in `camelCase`.
   - All global variable names must be in `PascalCase` with a `g` prefix.
   - All constants must be in `PascalCase` with a `k` prefix.
   - All enum variants must be in `PascalCase` with an `e` prefix.
-  - All macros must be in `SCREAMING_SNAKE_CASE` with an `TOMURCUK_` prefix.
+  - All macros must be in `SCREAMING_SNAKE_CASE` with an `MODULE_NAME_` prefix.
   - All public field names must be in `camelCase`.
   - All private field names must be in `PascalCase` with an `m` prefix.
 - Physical structure
-  - All types must be in their own file, which is named the same as the type.
-  - All source files must be under the `sources/tomurcuk` directory.
-  - All public header files must be under the `publicHeaders/tomurcuk`
-    directory.
-  - All private header files must be under the `privateHeaders/tomurcuk`
-    directory.
-  - All source files must have `.cpp` file extension.
-  - All header files must have `.hpp` file extension.
+  - All types must have a header file at
+    `<visibilityName>/<moduleName>/<packageName>/<TypeName>.hpp`.
+  - Non-type cross-platform header files must be placed at
+    `<visibilityName>/<moduleName>/<packageName>/<FileDescription>.hpp`.
+  - Non-type platform-specific header files must be placed at
+    `<visibilityName>/<moduleName>/<packageName>/<platformName>/<FileDescription>.hpp`.
+  - All types that need a cross-platform implementation file must place it at
+    `private/<moduleName>/<packageName>/<TypeName>.cpp`.
+  - All types that need a platform-specific implementation file must place it at
+    `private/<moduleName>/<packageName>/<platformName>/<TypeName>.cpp`.
+  - Non-type cross-platform implementation files must be placed at
+    `private/<moduleName>/<packageName>/<FileDescription>.cpp`.
+  - Non-type platform-specific implementation files must be placed at
+    `private/<moduleName>/<packageName>/<platformName>/<FileDescription>.cpp`.
 - Format
   - All functions must be in trailing return type format.
   - All variables must be declared with `auto`.
@@ -59,6 +69,8 @@ Collection of general-purpose utilities.
   - Use latest possible version.
   - All `clang` extensions can be used.
   - All dependencies must be brought in via `FetchContent` of `CMake`.
-  - All `CMake` target names must be in `PascalCase` with a `tomurcuk` prefix.
+  - All packages must have a `CMake` target named
+    `<moduleName>Package<PackageName>`.
+  - All modules must have a `CMake` target named `<ModuleName>Module`.
   - All `CMake` variable names must be in `SCREAMING_SNAKE_CASE` with an
-    `TOMURCUK_` prefix.
+    `<MODULE_NAME>_` prefix.
