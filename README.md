@@ -58,6 +58,8 @@ Collection of general-purpose utilities.
     `private/<moduleName>/<packageName>/<FileDescription>.cpp`.
   - Non-type platform-specific implementation files must be placed at
     `private/<moduleName>/<packageName>/<platformName>/<FileDescription>.cpp`.
+  - All executable modules must have the entrypoint at
+    `private/<moduleName>/main.cpp`.
 - Format
   - All functions must be in trailing return type format.
   - All variables must be declared with `auto`.
