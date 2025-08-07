@@ -2,8 +2,10 @@
 Checks: "*\
   ,-altera-unroll-loops\
   ,-android-cloexec-fopen\
+  ,-bugprone-easily-swappable-parameters\
   ,-cert-dcl50-cpp\
   ,-cppcoreguidelines-avoid-c-arrays\
+  ,-cppcoreguidelines-avoid-magic-numbers\
   ,-cppcoreguidelines-pro-bounds-array-to-pointer-decay\
   ,-cppcoreguidelines-pro-bounds-pointer-arithmetic\
   ,-cppcoreguidelines-pro-type-vararg\
@@ -19,9 +21,11 @@ Checks: "*\
   ,-llvm-qualified-auto\
   ,-llvmlibc-callee-namespace\
   ,-llvmlibc-implementation-in-namespace\
+  ,-llvmlibc-inline-function-decl\
   ,-llvmlibc-restrict-system-libc-headers\
   ,-modernize-avoid-c-arrays\
   ,-modernize-deprecated-headers\
+  ,-readability-magic-numbers\
   ,-readability-make-member-function-const\
   ,-readability-named-parameter\
   ,-readability-qualified-auto\

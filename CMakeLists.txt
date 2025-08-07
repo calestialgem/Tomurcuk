@@ -96,7 +96,12 @@ endfunction()
 #-------------------------------------------------------------------------------
 # The library
 
-tomurcukDefinePackage(Tomurcuk Base)
+tomurcukDefinePackage(Tomurcuk Base
+    SOURCES
+        "Bytes.cpp"
+    WINDOWS_SOURCES
+        "Bytes.cpp"
+)
 
 tomurcukDefinePackage(Tomurcuk Demo
     SOURCES
