@@ -3,6 +3,9 @@
 #include <stdint.h>
 
 namespace tomurcuk {
+    /*
+     * Abstracts over memory allocation schemes.
+     */
     class MemoryAllocator {
     public:
         /**
