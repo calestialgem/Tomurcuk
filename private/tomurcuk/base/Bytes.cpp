@@ -6,6 +6,21 @@
 
 static_assert(sizeof(size_t) == 8);
 
+auto tomurcuk::Bytes::alignUpwards(int64_t amount, int64_t alignment) -> int64_t {
+    assert(amount >= 0);
+    assert(alignment > 0);
+
+    auto reminder = amount % alignment;
+    if (reminder != 0) {
+        auto padding = alignment - reminder;
+        if (amount > INT64_MAX - padding) {
+            abort();
+        }
+        amount += padding;
+    }
+    return amount;
+}
+
 auto tomurcuk::Bytes::growCapacity(int64_t capacity, int64_t load, int64_t reserved) -> int64_t {
     assert(capacity >= 0);
     assert(load >= 0);

@@ -9,6 +9,15 @@ namespace tomurcuk {
     class Bytes {
     public:
         /**
+         * Aligns an amount of bytes up to an alignment requirement.
+         *
+         * @param[in] amount The aligned amount.
+         * @param[in] alignment The required alignment.
+         * @return The correctly aligned amount.
+         */
+        static auto alignUpwards(int64_t amount, int64_t alignment) -> int64_t;
+
+        /**
          * Calculates a new capacity that is big enough to hold the current load
          * and the required growth.
          *

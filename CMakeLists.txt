@@ -100,8 +100,10 @@ tomurcukDefinePackage(Tomurcuk Base
     SOURCES
         "Bytes.cpp"
         "MemoryAllocator.cpp"
+        "VirtualBlock.cpp"
     WINDOWS_SOURCES
         "Bytes.cpp"
+        "VirtualBlock.cpp"
 )
 
 tomurcukDefinePackage(Tomurcuk Demo
