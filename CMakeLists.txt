@@ -99,6 +99,7 @@ endfunction()
 tomurcukDefinePackage(Tomurcuk Base
     SOURCES
         "Bytes.cpp"
+        "MemoryAllocator.cpp"
     WINDOWS_SOURCES
         "Bytes.cpp"
 )
