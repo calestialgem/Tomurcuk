@@ -65,7 +65,7 @@ Collection of general-purpose utilities.
     `private/<moduleName>/main.cpp`.
 - Format
   - All functions must be in trailing return type format.
-  - All variables must be declared with `auto`.
+  - All initialized variables must be declared with `auto`.
   - All committed code must be formatted with `clang-format`.
   - Some code sections can be manually formatted to improve readability. This is
     usually good for code that can be formatted into a table by making some
