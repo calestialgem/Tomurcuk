@@ -3,9 +3,10 @@
 #include <string.h>
 #include <tomurcuk/status/StandardError.hpp>
 
+static_assert(sizeof(errno) <= 4);
+
 auto tomurcuk::StandardError::getCurrent() -> StandardError {
-    auto result = StandardError{};
-    static_assert(sizeof(errno) <= 4);
+    StandardError result;
     result.mCode = (uint32_t)errno;
     return result;
 }

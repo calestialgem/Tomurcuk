@@ -2,9 +2,10 @@
 #include <tomurcuk/base/windows/Windows.hpp>
 #include <tomurcuk/status/PlatformError.hpp>
 
+static_assert(sizeof(DWORD) <= 4);
+
 auto tomurcuk::PlatformError::getCurrent() -> PlatformError {
-    auto result = PlatformError{};
-    static_assert(sizeof(DWORD) <= 4);
+    PlatformError result;
     result.mCode = (uint32_t)GetLastError();
     return result;
 }
