@@ -76,8 +76,19 @@ namespace tomurcuk {
          */
         static auto alignToAllocationGranularity(int64_t amount) -> int64_t;
 
+        /**
+         * Address of the virtual memory region.
+         */
         void *mAddress;
+
+        /**
+         * Amount of virtual bytes in the block.
+         */
         int64_t mCapacity;
+
+        /**
+         * Amount of real bytes that are mapped to the block.
+         */
         int64_t mLoad;
     };
 }
