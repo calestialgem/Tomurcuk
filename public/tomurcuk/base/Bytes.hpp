@@ -187,7 +187,6 @@ namespace tomurcuk {
             return testBlockExactness(object0, sizeof(Object), object1, sizeof(Object));
         }
 
-    private:
         /**
          * Fills an array of bytes with `0`s.
          *
