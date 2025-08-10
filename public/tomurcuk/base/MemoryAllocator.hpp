@@ -9,6 +9,14 @@ namespace tomurcuk {
     class MemoryAllocator {
     public:
         /**
+         * Creates a new allocator abstraction.
+         *
+         * @param[in,out] state The pointer to the state of the allocator.
+         * @param[in] reallocate The implementation of @ref mReallocate.
+         */
+        auto initialize(void *state, bool (*reallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldCount, int64_t newCount, int64_t size, int64_t alignment)) -> void;
+
+        /**
          * Allocates elements from the allocator.
          *
          * @tparam Element The type of the elements.
