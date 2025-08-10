@@ -29,6 +29,7 @@ Checks: "*\
   ,-llvmlibc-restrict-system-libc-headers\
   ,-modernize-avoid-c-arrays\
   ,-modernize-deprecated-headers\
+  ,-readability-function-cognitive-complexity\
   ,-readability-magic-numbers\
   ,-readability-make-member-function-const\
   ,-readability-named-parameter\
