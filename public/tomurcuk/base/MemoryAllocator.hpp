@@ -1,5 +1,6 @@
 #pragma once
 
+#include <assert.h>
 #include <stdint.h>
 
 namespace tomurcuk {
@@ -14,7 +15,7 @@ namespace tomurcuk {
          * @param[in,out] state The pointer to the state of the allocator.
          * @param[in] reallocate The implementation of @ref mReallocate.
          */
-        auto initialize(void *state, bool (*reallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldCount, int64_t newCount, int64_t size, int64_t alignment)) -> void;
+        auto initialize(void *state, bool (*reallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment)) -> void;
 
         /**
          * Allocates elements from the allocator.
@@ -27,8 +28,10 @@ namespace tomurcuk {
          */
         template<typename Element>
         auto allocateArray(Element **newArray, int64_t newCount) -> bool {
+            assert(newCount <= INT64_MAX / sizeof(Element));
+
             void *newBlock;
-            auto status = allocateBlock(&newBlock, newCount, sizeof(Element), alignof(Element));
+            auto status = allocateBlock(&newBlock, newCount * sizeof(Element), alignof(Element));
             if (status) {
                 *newArray = (Element *)newBlock;
             }
@@ -49,8 +52,11 @@ namespace tomurcuk {
          */
         template<typename Element>
         auto reallocateArray(Element **newArray, Element *oldArray, int64_t oldCount, int64_t newCount) -> bool {
+            assert(oldCount <= INT64_MAX / sizeof(Element));
+            assert(newCount <= INT64_MAX / sizeof(Element));
+
             void *newBlock;
-            auto status = reallocateBlock(&newBlock, oldArray, oldCount, newCount, sizeof(Element), alignof(Element));
+            auto status = reallocateBlock(&newBlock, oldArray, oldCount * sizeof(Element), newCount * sizeof(Element), alignof(Element));
             if (status) {
                 *newArray = (Element *)newBlock;
             }
@@ -69,7 +75,9 @@ namespace tomurcuk {
          */
         template<typename Element>
         auto deallocateArray(Element *oldArray, int64_t oldCount) -> void {
-            deallocateBlock(oldArray, oldCount, sizeof(Element), alignof(Element));
+            assert(oldCount <= INT64_MAX / sizeof(Element));
+
+            deallocateBlock(oldArray, oldCount * sizeof(Element), alignof(Element));
         }
 
         /**
@@ -82,7 +90,7 @@ namespace tomurcuk {
         template<typename Object>
         auto allocateObject(Object **newObject) -> bool {
             void *newBlock;
-            auto status = allocateBlock(&newBlock, 1, sizeof(Object), alignof(Object));
+            auto status = allocateBlock(&newBlock, sizeof(Object), alignof(Object));
             if (status) {
                 *newObject = (Object *)newBlock;
             }
@@ -98,7 +106,7 @@ namespace tomurcuk {
          */
         template<typename Object>
         auto deallocateObject(Object *oldObject) -> void {
-            deallocateBlock(oldObject, 1, sizeof(Object), alignof(Object));
+            deallocateBlock(oldObject, sizeof(Object), alignof(Object));
         }
 
     private:
@@ -106,40 +114,37 @@ namespace tomurcuk {
          * Allocates an array of bytes from the allocator.
          *
          * @param[out] newBlock The pointer to the newly allocated block.
-         * @param[in] newCount The amount of elements that is desired to be in
+         * @param[in] newSize The amount of bytes that is desired to be in
          * the resulting block.
-         * @param[in] size The amount of bytes in an element.
          * @return Whether the request succeeded.
          */
-        auto allocateBlock(void **newBlock, int64_t newCount, int64_t size, int64_t alignment) -> bool;
+        auto allocateBlock(void **newBlock, int64_t newSize, int64_t alignment) -> bool;
 
         /**
-         * Changes the count of an array of bytes in the allocator.
+         * Changes the size of an array of bytes in the allocator.
          *
          * @param[out] newBlock The pointer to the reallocated block.
          * @param[in] oldBlock The pointer to the block that will be reallocated.
-         * Must be `nullptr` if `oldCount` is `0`.
-         * @param[in] oldCount The amount of elements in `oldBlock`.
-         * @param[in] newCount The amount of elements that is desired to be in the
+         * Must be `nullptr` if `oldSize` is `0`.
+         * @param[in] oldSize The amount of bytes in `oldBlock`.
+         * @param[in] newSize The amount of bytes that is desired to be in the
          * resulting block.
-         * @param[in] size The amount of bytes in an element.
-         * @param[in] alignment The amount of bytes the elements' address must be
-         * evenly divisible to.
+         * @param[in] alignment The amount of bytes the address must be evenly
+         * divisible to.
          * @return Whether the request succeeded.
          */
-        auto reallocateBlock(void **newBlock, void *oldBlock, int64_t oldCount, int64_t newCount, int64_t size, int64_t alignment) -> bool;
+        auto reallocateBlock(void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment) -> bool;
 
         /**
          * Relinquishes an array of bytes back to the allocator.
          *
          * @param[in] oldBlock The pointer to the block that will be deallocated.
-         * Must be `nullptr` if `oldCount` is `0`.
-         * @param[in] oldCount The amount of elements in `oldBlock`.
-         * @param[in] size The amount of bytes in an element.
-         * @param[in] alignment The amount of bytes the elements' address must be
-         * evenly divisible to.
+         * Must be `nullptr` if `oldSize` is `0`.
+         * @param[in] oldSize The amount of bytes in `oldBlock`.
+         * @param[in] alignment The amount of bytes the address must be evenly
+         * divisible to.
          */
-        auto deallocateBlock(void *oldBlock, int64_t oldCount, int64_t size, int64_t alignment) -> void;
+        auto deallocateBlock(void *oldBlock, int64_t oldSize, int64_t alignment) -> void;
 
         /**
          * Data of the implementation.
@@ -152,15 +157,14 @@ namespace tomurcuk {
          * @param[in,out] state The pointer to the state of the allocator.
          * @param[out] newBlock The pointer to the newly allocated block.
          * @param[in] oldBlock The pointer to the block that will be reallocated.
-         * Must be `nullptr` if `oldCount` is `0`.
-         * @param[in] oldCount The amount of elements in `oldBlock`.
-         * @param[in] newCount The amount of elements that is desired to be in the
+         * Must be `nullptr` if `oldSize` is `0`.
+         * @param[in] oldSize The amount of bytes in `oldBlock`.
+         * @param[in] newSize The amount of bytes that is desired to be in the
          * resulting block.
-         * @param[in] size The amount of bytes in an element.
-         * @param[in] alignment The amount of bytes the elements' address must be
-         * evenly divisible to.
+         * @param[in] alignment The amount of bytes the address must be evenly
+         * divisible to.
          * @return Whether the request succeeded.
          */
-        bool (*mReallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldCount, int64_t newCount, int64_t size, int64_t alignment);
+        bool (*mReallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment);
     };
 }
