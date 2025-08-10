@@ -1,5 +1,6 @@
 #pragma once
 
+#include <assert.h>
 #include <stdint.h>
 
 namespace tomurcuk {
@@ -44,7 +45,9 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto resetArray(Element *array, int64_t count) -> void {
-            resetBlock(array, count, sizeof(Element));
+            assert(count <= INT64_MAX / sizeof(Element));
+
+            resetBlock(array, count * sizeof(Element));
         }
 
         /**
@@ -59,7 +62,9 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto resetSecretArray(Element *array, int64_t count) -> void {
-            resetSecretBlock(array, count, sizeof(Element));
+            assert(count <= INT64_MAX / sizeof(Element));
+
+            resetSecretBlock(array, count * sizeof(Element));
         }
 
         /**
@@ -74,7 +79,9 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto copyArray(Element *destinationArray, Element *sourceArray, int64_t count) -> void {
-            copyBlock(destinationArray, sourceArray, count, sizeof(Element));
+            assert(count <= INT64_MAX / sizeof(Element));
+
+            copyBlock(destinationArray, sourceArray, count * sizeof(Element));
         }
 
         /**
@@ -89,7 +96,9 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto copyAliasingArray(Element *destinationArray, Element *sourceArray, int64_t count) -> void {
-            copyAliasingBlock(destinationArray, sourceArray, count, sizeof(Element));
+            assert(count <= INT64_MAX / sizeof(Element));
+
+            copyAliasingBlock(destinationArray, sourceArray, count * sizeof(Element));
         }
 
         /**
@@ -106,7 +115,10 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto testArrayExactness(Element *array0, int64_t count0, Element *array1, int64_t count1) -> bool {
-            return testBlockExactness(array0, count0, array1, count1, sizeof(Element));
+            assert(count0 <= INT64_MAX / sizeof(Element));
+            assert(count1 <= INT64_MAX / sizeof(Element));
+
+            return testBlockExactness(array0, count0 * sizeof(Element), array1, count1 * sizeof(Element));
         }
 
         /**
@@ -117,7 +129,7 @@ namespace tomurcuk {
          */
         template<typename Object>
         static auto resetObject(Object *object) -> void {
-            resetBlock(object, 1, sizeof(Object));
+            resetBlock(object, sizeof(Object));
         }
 
         /**
@@ -131,7 +143,7 @@ namespace tomurcuk {
          */
         template<typename Object>
         static auto resetSecretObject(Object *object) -> void {
-            resetSecretBlock(object, 1, sizeof(Object));
+            resetSecretBlock(object, sizeof(Object));
         }
 
         /**
@@ -145,7 +157,7 @@ namespace tomurcuk {
          */
         template<typename Object>
         static auto copyObject(Object *destinationObject, Object *sourceObject) -> void {
-            copyBlock(destinationObject, sourceObject, 1, sizeof(Object));
+            copyBlock(destinationObject, sourceObject, sizeof(Object));
         }
 
         /**
@@ -159,7 +171,7 @@ namespace tomurcuk {
          */
         template<typename Object>
         static auto copyAliasingObject(Object *destinationObject, Object *sourceObject) -> void {
-            copyAliasingBlock(destinationObject, sourceObject, 1, sizeof(Object));
+            copyAliasingBlock(destinationObject, sourceObject, sizeof(Object));
         }
 
         /**
@@ -172,7 +184,7 @@ namespace tomurcuk {
          */
         template<typename Object>
         static auto testObjectExactness(Object *object0, Object *object1) -> bool {
-            return testBlockExactness(object0, 1, object1, 1, sizeof(Object));
+            return testBlockExactness(object0, sizeof(Object), object1, sizeof(Object));
         }
 
     private:
@@ -180,10 +192,9 @@ namespace tomurcuk {
          * Fills an array of bytes with `0`s.
          *
          * @param[out] block The pointer to the block that will be reset.
-         * @param[in] count The amount of elements that will be reset.
-         * @param[in] size The amount of bytes in an element.
+         * @param[in] size The amount of bytes that will be reset.
          */
-        static auto resetBlock(void *block, int64_t count, int64_t size) -> void;
+        static auto resetBlock(void *block, int64_t size) -> void;
 
         /**
          * Fills a secret array of bytes with `0`s.
@@ -192,10 +203,9 @@ namespace tomurcuk {
          * data is securely erased.
          *
          * @param[out] block The pointer to the block that will be reset.
-         * @param[in] count The amount of elements that will be reset.
-         * @param[in] size The amount of bytes in an element.
+         * @param[in] size The amount of bytes that will be reset.
          */
-        static auto resetSecretBlock(void *block, int64_t count, int64_t size) -> void;
+        static auto resetSecretBlock(void *block, int64_t size) -> void;
 
         /**
          * Copies bytes from a block to another one that is guaranteed to not overlap
@@ -205,10 +215,9 @@ namespace tomurcuk {
          * copied to.
          * @param[in] sourceBlock The pointer to the block that will be copied
          * from.
-         * @param[in] count The amount of elements that will be copied.
-         * @param[in] size The amount of bytes in an element.
+         * @param[in] size The amount of bytes that will be copied.
          */
-        static auto copyBlock(void *destinationBlock, void *sourceBlock, int64_t count, int64_t size) -> void;
+        static auto copyBlock(void *destinationBlock, void *sourceBlock, int64_t size) -> void;
 
         /**
          * Copies bytes from a block to another one that might overlap with it.
@@ -217,21 +226,19 @@ namespace tomurcuk {
          * copied to.
          * @param[in] sourceBlock The pointer to the block that will be copied
          * from.
-         * @param[in] count The amount of elements that will be copied.
-         * @param[in] size The amount of bytes in an element.
+         * @param[in] size The amount of bytes that will be copied.
          */
-        static auto copyAliasingBlock(void *destinationBlock, void *sourceBlock, int64_t count, int64_t size) -> void;
+        static auto copyAliasingBlock(void *destinationBlock, void *sourceBlock, int64_t size) -> void;
 
         /**
          * Tests whether a pair of blocks have the exact same bytes.
          *
          * @param[in] block0 The pointer to the first compared block.
-         * @param[in] count0 The amount of elements in the first compared block.
+         * @param[in] size0 The amount of bytes in the first compared block.
          * @param[in] block1 The pointer to the second compared block.
-         * @param[in] count1 The amount of elements in the second compared block.
-         * @param[in] size The amount of bytes in an element.
+         * @param[in] size1 The amount of bytes in the second compared block.
          * @return Whether the bytes in the given blocks are exactly the same.
          */
-        static auto testBlockExactness(void *block0, int64_t count0, void *block1, int64_t count1, int64_t size) -> bool;
+        static auto testBlockExactness(void *block0, int64_t size0, void *block1, int64_t size1) -> bool;
     };
 }
