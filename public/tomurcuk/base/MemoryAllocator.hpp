@@ -109,7 +109,6 @@ namespace tomurcuk {
             deallocateBlock(oldObject, sizeof(Object), alignof(Object));
         }
 
-    private:
         /**
          * Allocates an array of bytes from the allocator.
          *
@@ -146,6 +145,7 @@ namespace tomurcuk {
          */
         auto deallocateBlock(void *oldBlock, int64_t oldSize, int64_t alignment) -> void;
 
+    private:
         /**
          * Data of the implementation.
          */
