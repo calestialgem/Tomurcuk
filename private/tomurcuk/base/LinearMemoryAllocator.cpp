@@ -7,9 +7,9 @@
 
 static_assert(sizeof(void *) == 8);
 
-auto tomurcuk::LinearMemoryAllocator::initialize(int64_t capacity) -> void {
-    mVirtualBlock.initialize(capacity);
+auto tomurcuk::LinearMemoryAllocator::initialize(int64_t capacity) -> int64_t {
     mCursor = 0;
+    return mVirtualBlock.initialize(capacity);
 }
 
 auto tomurcuk::LinearMemoryAllocator::destroy() -> void {

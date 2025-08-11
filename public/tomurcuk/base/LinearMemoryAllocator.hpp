@@ -16,10 +16,14 @@ namespace tomurcuk {
         /**
          * Creates a new allocator with a capacity.
          *
+         * @see VirtualBlock::initialize
+         *
          * @param[in] capacity The amount of virtual bytes that will be
-         * allocated. See @ref VirtualBlock::initialize.
+         * allocated.
+         * @return The actually allocated amount of virtual bytes on success. On
+         * failure, `0`.
          */
-        auto initialize(int64_t capacity) -> void;
+        auto initialize(int64_t capacity) -> int64_t;
 
         /**
          * Deallocates all the virtual bytes.
