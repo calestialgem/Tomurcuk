@@ -5,6 +5,7 @@ Checks: "*\
   ,-bugprone-easily-swappable-parameters\
   ,-cert-dcl50-cpp\
   ,-cppcoreguidelines-avoid-c-arrays\
+  ,-cppcoreguidelines-avoid-do-while\
   ,-cppcoreguidelines-avoid-magic-numbers\
   ,-cppcoreguidelines-init-variables\
   ,-cppcoreguidelines-pro-bounds-array-to-pointer-decay\
