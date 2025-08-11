@@ -63,9 +63,9 @@ namespace tomurcuk {
          * elements.
          */
         auto getSize() -> int64_t {
-            assert(mCount <= INT64_MAX / (int64_t)sizeof(mCount));
+            assert(mCount <= INT64_MAX / (int64_t)sizeof(Element));
 
-            return mCount * (int64_t)sizeof(mCount);
+            return mCount * (int64_t)sizeof(Element);
         }
 
         /**
