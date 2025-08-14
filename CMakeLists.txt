@@ -127,6 +127,7 @@ endfunction()
 tomurcukDefinePackage(Tomurcuk Base
     SOURCES
         "Bytes.cpp"
+        "Hasher.cpp"
         "LinearMemoryAllocator.cpp"
         "MemoryAllocator.cpp"
         "VirtualBlock.cpp"
