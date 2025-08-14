@@ -128,21 +128,21 @@ namespace tomurcuk {
         /**
          * Queries an element's equivalent's membership.
          *
-         * @param[in] element The queried element.
+         * @param[in] queriedElement The queried element.
          * @return The given element's equivalent's index if it exists.
          * Otherwise, `-1`.
          */
-        auto locate(Element element) -> int64_t {
+        auto locate(Element *queriedElement) -> int64_t {
             if (mBucketCount == 0) {
                 return -1;
             }
 
-            auto hash = Hashable<Element>::hash(&element);
+            auto queriedHash = Hashable<Element>::hash(queriedElement);
 
             for (auto queriedProbeLength = INT64_C(0);; queriedProbeLength++) {
                 // Hypothetical bucket index of the queried element, which is
                 // also the bucket index of the tested element.
-                auto bucketIndex = findBucketIndex(hash, queriedProbeLength);
+                auto bucketIndex = findBucketIndex(queriedHash, queriedProbeLength);
 
                 // If there is no element to test, it is not in.
                 auto testedIndex = mBucketArray[bucketIndex];
@@ -153,7 +153,7 @@ namespace tomurcuk {
                 // If the tested element compares equal, we have found it.
                 auto testedHash = mHashArray[testedIndex];
                 auto testedElement = mArray + testedIndex;
-                if (hash == testedHash && EqualityComparable<Element>::compare(&element, testedElement)) {
+                if (queriedHash == testedHash && EqualityComparable<Element>::compare(queriedElement, testedElement)) {
                     return testedIndex;
                 }
 
