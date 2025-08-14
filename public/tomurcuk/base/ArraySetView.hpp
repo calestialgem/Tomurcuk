@@ -2,7 +2,6 @@
 
 #include <assert.h>
 #include <stdint.h>
-#include <tomurcuk/base/ArrayListView.hpp>
 #include <tomurcuk/base/EqualityComparable.hpp>
 #include <tomurcuk/base/Hashable.hpp>
 
