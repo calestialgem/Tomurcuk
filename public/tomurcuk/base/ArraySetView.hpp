@@ -181,7 +181,7 @@ namespace tomurcuk {
             // Do a signed modulus to protect against overflow. Then, handle the
             // sign by adding the modulus once if the result is negative.
             auto reminder = ((int64_t)hash % mBucketCount + probeLength) % mBucketCount;
-            return reminder + (int64_t)((uint64_t)mBucketCount & (uint64_t)-(int64_t)(reminder < 0));
+            return reminder + (mBucketCount * (int64_t)(reminder < 0));
         }
 
         /**
@@ -197,7 +197,7 @@ namespace tomurcuk {
             // Do a signed modulus to protect against overflow. Then, handle the
             // sign by adding the modulus once if the result is negative.
             auto reminder = (bucketIndex - (int64_t)hash % mBucketCount) % mBucketCount;
-            return reminder + (int64_t)((uint64_t)mBucketCount & (uint64_t)-(int64_t)(reminder < 0));
+            return reminder + (mBucketCount * (int64_t)(reminder < 0));
         }
 
         /**
