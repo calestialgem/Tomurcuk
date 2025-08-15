@@ -28,6 +28,7 @@ namespace tomurcuk {
          */
         template<typename Element>
         auto allocateArray(Element **newArray, int64_t newCount) -> bool {
+            assert(newCount >= 0);
             assert(newCount <= INT64_MAX / (int64_t)sizeof(Element));
 
             void *newBlock;
@@ -52,7 +53,9 @@ namespace tomurcuk {
          */
         template<typename Element>
         auto reallocateArray(Element **newArray, Element *oldArray, int64_t oldCount, int64_t newCount) -> bool {
+            assert(oldCount >= 0);
             assert(oldCount <= INT64_MAX / (int64_t)sizeof(Element));
+            assert(newCount >= 0);
             assert(newCount <= INT64_MAX / (int64_t)sizeof(Element));
 
             void *newBlock;
@@ -75,6 +78,7 @@ namespace tomurcuk {
          */
         template<typename Element>
         auto deallocateArray(Element *oldArray, int64_t oldCount) -> void {
+            assert(oldCount >= 0);
             assert(oldCount <= INT64_MAX / (int64_t)sizeof(Element));
 
             deallocateBlock(oldArray, oldCount * (int64_t)sizeof(Element), alignof(Element));
