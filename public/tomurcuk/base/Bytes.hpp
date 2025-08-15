@@ -45,6 +45,7 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto resetArray(Element *array, int64_t count) -> void {
+            assert(count >= 0);
             assert(count <= INT64_MAX / (int64_t)sizeof(Element));
 
             resetBlock(array, count * (int64_t)sizeof(Element));
@@ -62,6 +63,7 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto resetSecretArray(Element *array, int64_t count) -> void {
+            assert(count >= 0);
             assert(count <= INT64_MAX / (int64_t)sizeof(Element));
 
             resetSecretBlock(array, count * (int64_t)sizeof(Element));
@@ -79,6 +81,7 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto copyArray(Element *destinationArray, Element *sourceArray, int64_t count) -> void {
+            assert(count >= 0);
             assert(count <= INT64_MAX / (int64_t)sizeof(Element));
 
             copyBlock(destinationArray, sourceArray, count * (int64_t)sizeof(Element));
@@ -96,6 +99,7 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto copyAliasingArray(Element *destinationArray, Element *sourceArray, int64_t count) -> void {
+            assert(count >= 0);
             assert(count <= INT64_MAX / (int64_t)sizeof(Element));
 
             copyAliasingBlock(destinationArray, sourceArray, count * (int64_t)sizeof(Element));
@@ -115,7 +119,9 @@ namespace tomurcuk {
          */
         template<typename Element>
         static auto testArrayExactness(Element *array0, int64_t count0, Element *array1, int64_t count1) -> bool {
+            assert(count0 >= 0);
             assert(count0 <= INT64_MAX / (int64_t)sizeof(Element));
+            assert(count1 >= 0);
             assert(count1 <= INT64_MAX / (int64_t)sizeof(Element));
 
             return testBlockExactness(array0, count0 * (int64_t)sizeof(Element), array1, count1 * (int64_t)sizeof(Element));
