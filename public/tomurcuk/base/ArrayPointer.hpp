@@ -21,7 +21,7 @@ namespace tomurcuk {
         /**
          * Creates a new @ref ArrayPointer.
          *
-         * @return A @ref ArrayPointer who points to `nullptr`.
+         * @return An @ref ArrayPointer who points to `nullptr`.
          */
         static auto create() -> ArrayPointer<Element> {
             ArrayPointer<Element> arrayPointer;
