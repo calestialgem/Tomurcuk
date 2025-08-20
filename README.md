@@ -79,3 +79,11 @@ Collection of general-purpose utilities.
   - All modules must have a `CMake` target named `module<ModuleName>`.
   - All `CMake` variable names must be in `SCREAMING_SNAKE_CASE` with an
     `<MODULE_NAME>_` prefix.
+- Documentation
+  - All files must start with a comment that explains what it does, why it is
+    needed, and how it should be used.
+  - Individual symbols should not be documented when created. Later, if it is
+    seen that a symbol is too complex to understand under a couple of minutes,
+    it can be briefly explained with a comment right before its declaration.
+  - Higher level design decisions could be explained in documents that are
+    placed in `documents` directory.
