@@ -39,21 +39,21 @@
 ## Physical structure
 
 - All types must have a header file at
-  `<visibilityName>/<moduleName>/<packageName>/<TypeName>.hpp`.
+  `sources/<visibilityName>/<moduleName>/<packageName>/<TypeName>.hpp`.
 - Non-type cross-platform header files must be placed at
-  `<visibilityName>/<moduleName>/<packageName>/<FileDescription>.hpp`.
+  `sources/<visibilityName>/<moduleName>/<packageName>/<FileDescription>.hpp`.
 - Non-type platform-specific header files must be placed at
-  `<visibilityName>/<moduleName>/<packageName>/<platformName>/<FileDescription>.hpp`.
+  `sources/<visibilityName>/<moduleName>/<packageName>/<platformName>/<FileDescription>.hpp`.
 - All types that need a cross-platform implementation file must place it at
-  `private/<moduleName>/<packageName>/<TypeName>.cpp`.
+  `sources/private/<moduleName>/<packageName>/<TypeName>.cpp`.
 - All types that need a platform-specific implementation file must place it at
-  `private/<moduleName>/<packageName>/<platformName>/<TypeName>.cpp`.
+  `sources/private/<moduleName>/<packageName>/<platformName>/<TypeName>.cpp`.
 - Non-type cross-platform implementation files must be placed at
-  `private/<moduleName>/<packageName>/<FileDescription>.cpp`.
+  `sources/private/<moduleName>/<packageName>/<FileDescription>.cpp`.
 - Non-type platform-specific implementation files must be placed at
-  `private/<moduleName>/<packageName>/<platformName>/<FileDescription>.cpp`.
+  `sources/private/<moduleName>/<packageName>/<platformName>/<FileDescription>.cpp`.
 - All executable modules must have the entrypoint at
-  `private/<moduleName>/main.cpp`.
+  `sources/private/<moduleName>/main.cpp`.
 
 ## Format
 
