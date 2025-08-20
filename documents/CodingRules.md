@@ -69,11 +69,14 @@
 - Use latest possible version.
 - All `clang` extensions can be used.
 - All dependencies must be brought in via `FetchContent` of `CMake`.
+- All dependencies must be accessed through custom targets which are named as
+  `tomurcukCustom_<dependencyName>`.
+- All non-modular targets must be named as `tomurcukCustom_<targetName>`.
 - All packages must have a `CMake` target named
-  `package<ModuleName><PackageName>`.
-- All modules must have a `CMake` target named `module<ModuleName>`.
+  `tomurcukPackage_<moduleName>__<packageName>`.
+- All modules must have a `CMake` target named `tomurcukModule_<moduleName>`.
 - All `CMake` variable names must be in `SCREAMING_SNAKE_CASE` with an
-  `<MODULE_NAME>_` prefix.
+  `TOMURCUK_` prefix.
 
 ## Documentation
 
