@@ -35,8 +35,7 @@ All non-code targets must be named as `tomurcukCustom_<targetName>`.
 ## Physical structure
 
 All packages must have a subdirectory under `packages` top-level directory,
-which has the same name as the package. This directory must house a `README.md`
-file that describes the package.
+which has the same name as the package.
 
 All types must be housed in files that have the same name as the type.
 
