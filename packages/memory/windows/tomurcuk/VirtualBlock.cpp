@@ -3,27 +3,33 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <tomurcuk/Bytes.hpp>
+#include <tomurcuk/Result.hpp>
+#include <tomurcuk/Status.hpp>
 #include <tomurcuk/VirtualBlock.hpp>
 #include <tomurcuk/Windows.hpp>
 
 static_assert(sizeof(size_t) == 8);
 static_assert(sizeof(DWORD) == 4);
 
-auto tomurcuk::VirtualBlock::initialize(int64_t capacity) -> int64_t {
+auto tomurcuk::VirtualBlock::create(int64_t capacity) -> Result<VirtualBlock> {
     assert(capacity >= 0);
 
     if (capacity == 0) {
-        mCapacity = alignToAllocationGranularity(1);
+        capacity = alignToAllocationGranularity(1);
     } else {
-        mCapacity = alignToAllocationGranularity(capacity);
+        capacity = alignToAllocationGranularity(capacity);
     }
-    mLoad = 0;
-    mAddress = VirtualAlloc(nullptr, (size_t)mCapacity, MEM_RESERVE, PAGE_READWRITE);
 
-    if (mAddress == nullptr) {
-        return 0;
+    auto address = VirtualAlloc(nullptr, (size_t)capacity, MEM_RESERVE, PAGE_READWRITE);
+    if (address == nullptr) {
+        return Result<VirtualBlock>::failure();
     }
-    return mCapacity;
+
+    VirtualBlock virtualBlock;
+    virtualBlock.mAddress = address;
+    virtualBlock.mCapacity = capacity;
+    virtualBlock.mLoad = 0;
+    return Result<VirtualBlock>::success(virtualBlock);
 }
 
 auto tomurcuk::VirtualBlock::destroy() -> void {
@@ -32,44 +38,35 @@ auto tomurcuk::VirtualBlock::destroy() -> void {
     }
 }
 
-auto tomurcuk::VirtualBlock::reserve(int64_t amount) -> int64_t {
+auto tomurcuk::VirtualBlock::reserve(int64_t amount) -> Status {
     assert(amount >= 0);
-
-    auto oldLoad = mLoad;
 
     if (mLoad > mCapacity - amount) {
-        mLoad = mCapacity;
-    } else {
-        mLoad = alignToAllocationGranularity(mLoad + amount);
+        return Status::eFailure;
     }
 
-    auto actual = mLoad - oldLoad;
-
-    if (actual != 0 && VirtualAlloc((char *)mAddress + oldLoad, (size_t)actual, MEM_COMMIT, PAGE_READWRITE) == nullptr) {
-        return -1;
+    auto newLoad = alignToAllocationGranularity(mLoad + amount);
+    auto actualAmount = newLoad - mLoad;
+    if (actualAmount != 0 && VirtualAlloc((char *)mAddress + mLoad, (size_t)actualAmount, MEM_COMMIT, PAGE_READWRITE) == nullptr) {
+        return Status::eFailure;
     }
 
-    return actual;
+    mLoad = newLoad;
+    return Status::eSuccess;
 }
 
-auto tomurcuk::VirtualBlock::release(int64_t amount) -> int64_t {
+auto tomurcuk::VirtualBlock::release(int64_t amount) -> Status {
     assert(amount >= 0);
+    assert(amount <= mLoad);
 
-    auto oldLoad = mLoad;
-
-    if (mLoad < amount) {
-        mLoad = 0;
-    } else {
-        mLoad = alignToAllocationGranularity(mLoad - amount);
+    auto newLoad = alignToAllocationGranularity(mLoad - amount);
+    auto actualAmount = mLoad - newLoad;
+    if (actualAmount != 0 && VirtualFree((char *)mAddress + newLoad, (size_t)actualAmount, MEM_DECOMMIT) == 0) {
+        return Status::eFailure;
     }
 
-    auto actual = oldLoad - mLoad;
-
-    if (actual != 0 && VirtualFree((char *)mAddress + mLoad, (size_t)actual, MEM_DECOMMIT) == 0) {
-        return -1;
-    }
-
-    return actual;
+    mLoad = newLoad;
+    return Status::eSuccess;
 }
 
 auto tomurcuk::VirtualBlock::alignToAllocationGranularity(int64_t amount) -> int64_t {

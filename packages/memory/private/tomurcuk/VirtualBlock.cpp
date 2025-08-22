@@ -1,10 +1,10 @@
 #include <stdint.h>
 #include <tomurcuk/VirtualBlock.hpp>
 
-auto tomurcuk::VirtualBlock::getAddress() -> void * {
+auto tomurcuk::VirtualBlock::address() -> void * {
     return mAddress;
 }
 
-auto tomurcuk::VirtualBlock::getLoad() -> int64_t {
+auto tomurcuk::VirtualBlock::load() -> int64_t {
     return mLoad;
 }
