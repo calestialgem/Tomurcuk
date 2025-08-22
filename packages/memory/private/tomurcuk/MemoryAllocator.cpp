@@ -23,6 +23,6 @@ auto tomurcuk::MemoryAllocator::reallocate(void *oldBlock, int64_t oldSize, int6
 auto tomurcuk::MemoryAllocator::deallocate(void *oldBlock, int64_t oldSize, int64_t alignment) -> void {
     auto result = mReallocate(mState, oldBlock, oldSize, 0, alignment);
     assert(result.isSuccess());
-    assert(result.value() == nullptr);
+    assert(*result.value() == nullptr);
     (void)result;
 }
