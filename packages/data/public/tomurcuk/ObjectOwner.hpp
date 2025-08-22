@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <tomurcuk/MemoryAllocator.hpp>
 #include <tomurcuk/Result.hpp>
+#include <tomurcuk/Results.hpp>
 #include <tomurcuk/Status.hpp>
 
 namespace tomurcuk {
@@ -25,7 +26,7 @@ namespace tomurcuk {
                 return Result<ObjectOwner<Object>>::failure();
             }
 
-            return Result<ObjectOwner<Object>>::success(of((Object *)*blockResult.value()));
+            return Results::success(of((Object *)*blockResult.value()));
         }
 
         auto destroy(MemoryAllocator memoryAllocator) -> void {

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <tomurcuk/Bytes.hpp>
 #include <tomurcuk/Result.hpp>
+#include <tomurcuk/Results.hpp>
 #include <tomurcuk/Status.hpp>
 #include <tomurcuk/VirtualBlock.hpp>
 #include <tomurcuk/Windows.hpp>
@@ -29,7 +30,7 @@ auto tomurcuk::VirtualBlock::create(int64_t capacity) -> Result<VirtualBlock> {
     virtualBlock.mAddress = address;
     virtualBlock.mCapacity = capacity;
     virtualBlock.mLoad = 0;
-    return Result<VirtualBlock>::success(virtualBlock);
+    return Results::success(virtualBlock);
 }
 
 auto tomurcuk::VirtualBlock::destroy() -> void {

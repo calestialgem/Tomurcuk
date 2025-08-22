@@ -4,6 +4,7 @@
 #include <tomurcuk/LinearMemoryAllocator.hpp>
 #include <tomurcuk/MemoryAllocator.hpp>
 #include <tomurcuk/Result.hpp>
+#include <tomurcuk/Results.hpp>
 #include <tomurcuk/Status.hpp>
 #include <tomurcuk/VirtualBlock.hpp>
 
@@ -18,7 +19,7 @@ auto tomurcuk::LinearMemoryAllocator::create(int64_t capacity) -> Result<LinearM
     LinearMemoryAllocator linearMemoryAllocator;
     linearMemoryAllocator.mVirtualBlock = *virtualBlock.value();
     linearMemoryAllocator.mCursor = 0;
-    return Result<LinearMemoryAllocator>::success(linearMemoryAllocator);
+    return Results::success(linearMemoryAllocator);
 }
 
 auto tomurcuk::LinearMemoryAllocator::destroy() -> void {
@@ -99,19 +100,19 @@ auto tomurcuk::LinearMemoryAllocator::reallocate(void *oldBlock, int64_t oldSize
             // Reclaim if the operation shrinks the block.
             if (newSize <= oldSize) {
                 mCursor -= oldSize - newSize;
-                return Result<void *>::success(oldBlock);
+                return Results::success(oldBlock);
             }
 
             // Make the block grow in place.
             if (allocate(newSize - oldSize, 1).isFailure()) {
                 return Result<void *>::failure();
             }
-            return Result<void *>::success(oldBlock);
+            return Results::success(oldBlock);
         }
 
         // Try shrinking in place and leak the shrunk bytes.
         if (newSize <= oldSize) {
-            return Result<void *>::success(oldBlock);
+            return Results::success(oldBlock);
         }
 
         // Leak the old block totally and just allocate a new one.
@@ -154,5 +155,5 @@ auto tomurcuk::LinearMemoryAllocator::allocate(int64_t size, int64_t alignment) 
 
     auto block = (void *)((char *)mVirtualBlock.address() + mCursor + padding);
     mCursor += amount;
-    return Result<void *>::success(block);
+    return Results::success(block);
 }
