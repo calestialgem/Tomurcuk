@@ -4,7 +4,7 @@
 
 namespace tomurcuk {
     template<typename Value>
-    class Result {
+    class [[nodiscard]] Result {
     public:
         static auto success(Value value) -> Result<Value> {
             Result<Value> result;

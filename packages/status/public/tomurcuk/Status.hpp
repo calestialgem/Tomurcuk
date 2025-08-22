@@ -1,7 +1,7 @@
 #pragma once
 
 namespace tomurcuk {
-    enum class Status : bool {
+    enum class [[nodiscard]] Status : bool {
         eSuccess,
         eFailure,
     };
