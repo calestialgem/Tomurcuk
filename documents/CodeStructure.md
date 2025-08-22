@@ -28,7 +28,7 @@ For convenience there should be a static library that contains all packages that
 is named `tomurcuk`.
 
 All dependencies must be accessed through custom targets which are named as
-`tomurcukDependency_<dependencyName>`.
+`tomurcukCustom_<dependencyName>`.
 
 All non-code targets must be named as `tomurcukCustom_<targetName>`.
 
