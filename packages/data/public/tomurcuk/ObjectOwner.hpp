@@ -9,20 +9,20 @@ namespace tomurcuk {
     template<typename Object>
     class ObjectOwner {
     public:
-        static auto of(Object *pointer) -> ObjectOwner<Object> {
-            ObjectOwner<Object> objectOwner;
+        static auto of(Object *pointer) -> ObjectOwner {
+            ObjectOwner objectOwner;
             objectOwner.mPointer = pointer;
             return objectOwner;
         }
 
-        static auto null() -> ObjectOwner<Object> {
+        static auto null() -> ObjectOwner {
             return of(nullptr);
         }
 
-        static auto create(MemoryAllocator memoryAllocator) -> Result<ObjectOwner<Object>> {
+        static auto create(MemoryAllocator memoryAllocator) -> Result<ObjectOwner> {
             auto blockResult = memoryAllocator.allocate(sizeof(Object), alignof(Object));
             if (blockResult.isFailure()) {
-                return Result<ObjectOwner<Object>>::failure();
+                return Result<ObjectOwner>::failure();
             }
 
             return Results::success(of((Object *)*blockResult.value()));
