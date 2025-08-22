@@ -1,27 +1,28 @@
 #include <assert.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <tomurcuk/MemoryAllocator.hpp>
+#include <tomurcuk/Result.hpp>
 
-auto tomurcuk::MemoryAllocator::initialize(void *state, auto (*reallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment)->bool) -> void {
+auto tomurcuk::MemoryAllocator::create(void *state, auto (*reallocate)(void *state, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment)->Result<void *>) -> MemoryAllocator {
     assert(reallocate != nullptr);
 
-    mState = state;
-    mReallocate = reallocate;
+    MemoryAllocator memoryAllocator;
+    memoryAllocator.mState = state;
+    memoryAllocator.mReallocate = reallocate;
+    return memoryAllocator;
 }
 
-auto tomurcuk::MemoryAllocator::allocateBlock(void **newBlock, int64_t newSize, int64_t alignment) -> bool {
-    return mReallocate(mState, newBlock, nullptr, 0, newSize, alignment);
+auto tomurcuk::MemoryAllocator::allocate(int64_t newSize, int64_t alignment) -> Result<void *> {
+    return mReallocate(mState, nullptr, 0, newSize, alignment);
 }
 
-auto tomurcuk::MemoryAllocator::reallocateBlock(void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment) -> bool {
-    return mReallocate(mState, newBlock, oldBlock, oldSize, newSize, alignment);
+auto tomurcuk::MemoryAllocator::reallocate(void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment) -> Result<void *> {
+    return mReallocate(mState, oldBlock, oldSize, newSize, alignment);
 }
 
-auto tomurcuk::MemoryAllocator::deallocateBlock(void *oldBlock, int64_t oldSize, int64_t alignment) -> void {
-    void *newBlock;
-    auto status = mReallocate(mState, &newBlock, oldBlock, oldSize, 0, alignment);
-    if (!status) {
-        abort();
-    }
+auto tomurcuk::MemoryAllocator::deallocate(void *oldBlock, int64_t oldSize, int64_t alignment) -> void {
+    auto result = mReallocate(mState, oldBlock, oldSize, 0, alignment);
+    assert(result.isSuccess());
+    assert(result.value() == nullptr);
+    (void)result;
 }

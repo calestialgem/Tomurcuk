@@ -118,7 +118,10 @@ endfunction()
 
 tomurcukDefinePackage(status)
 
-tomurcukDefinePackage(memory)
+tomurcukDefinePackage(memory
+    TRANSITIVE_PACKAGE_DEPENDENCIES
+        status
+)
 
 tomurcukDefinePackage(data
     TRANSITIVE_PACKAGE_DEPENDENCIES
