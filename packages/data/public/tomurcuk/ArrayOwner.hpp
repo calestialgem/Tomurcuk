@@ -11,23 +11,23 @@ namespace tomurcuk {
     template<typename Element>
     class ArrayOwner {
     public:
-        static auto of(Element *pointer) -> ArrayOwner<Element> {
-            ArrayOwner<Element> arrayOwner;
+        static auto of(Element *pointer) -> ArrayOwner {
+            ArrayOwner arrayOwner;
             arrayOwner.mPointer = pointer;
             return arrayOwner;
         }
 
-        static auto null() -> ArrayOwner<Element> {
+        static auto null() -> ArrayOwner {
             return of(nullptr);
         }
 
-        static auto create(MemoryAllocator memoryAllocator, int64_t newLength) -> Result<ArrayOwner<Element>> {
+        static auto create(MemoryAllocator memoryAllocator, int64_t newLength) -> Result<ArrayOwner> {
             assert(newLength >= 0);
             assert(newLength <= INT64_MAX / (int64_t)sizeof(Element));
 
             auto newBlockResult = memoryAllocator.allocate(newLength * (int64_t)sizeof(Element), alignof(Element));
             if (newBlockResult.isFailure()) {
-                return Result<ArrayOwner<Element>>::failure();
+                return Result<ArrayOwner>::failure();
             }
 
             return Results::success(of((Element *)*newBlockResult.value()));
