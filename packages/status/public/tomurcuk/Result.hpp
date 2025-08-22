@@ -6,15 +6,15 @@ namespace tomurcuk {
     template<typename Value>
     class [[nodiscard]] Result {
     public:
-        static auto success(Value value) -> Result<Value> {
-            Result<Value> result;
+        static auto success(Value value) -> Result {
+            Result result;
             result.mStatus = Status::eSuccess;
             result.mValue = value;
             return result;
         }
 
-        static auto failure() -> Result<Value> {
-            Result<Value> result;
+        static auto failure() -> Result {
+            Result result;
             result.mStatus = Status::eFailure;
             return result;
         }
