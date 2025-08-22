@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <tomurcuk/MemoryAllocator.hpp>
 
-auto tomurcuk::MemoryAllocator::initialize(void *state, bool (*reallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment)) -> void {
+auto tomurcuk::MemoryAllocator::initialize(void *state, auto (*reallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment)->bool) -> void {
     assert(reallocate != nullptr);
 
     mState = state;

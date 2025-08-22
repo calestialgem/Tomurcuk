@@ -15,7 +15,7 @@ namespace tomurcuk {
          * @param[in,out] state The pointer to the state of the allocator.
          * @param[in] reallocate The implementation of @ref mReallocate.
          */
-        auto initialize(void *state, bool (*reallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment)) -> void;
+        auto initialize(void *state, auto (*reallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment)->bool) -> void;
 
         /**
          * Allocates elements from the allocator.
@@ -169,6 +169,6 @@ namespace tomurcuk {
          * divisible to.
          * @return Whether the request succeeded.
          */
-        bool (*mReallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment);
+        auto (*mReallocate)(void *state, void **newBlock, void *oldBlock, int64_t oldSize, int64_t newSize, int64_t alignment) -> bool;
     };
 }

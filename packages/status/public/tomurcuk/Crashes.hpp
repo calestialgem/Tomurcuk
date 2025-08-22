@@ -38,7 +38,7 @@ namespace tomurcuk {
          *
          * @param[in] crashHandler The new value of @ref sCrashHandler.
          */
-        static auto setCrashHandler(void (*crashHandler)()) -> void;
+        static auto setCrashHandler(auto (*crashHandler)()->void) -> void;
 
     private:
         /**
@@ -54,7 +54,7 @@ namespace tomurcuk {
          * @warning Must be synchronized if @ref crash might be called
          * concurrently.
          */
-        static void (*sCrashHandler)();
+        static auto (*sCrashHandler)() -> void;
 
         /**
          * Removes any trailing new lines from the given buffer.
