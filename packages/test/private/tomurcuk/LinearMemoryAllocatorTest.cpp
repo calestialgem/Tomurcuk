@@ -4,11 +4,12 @@
 #include <tomurcuk/Bytes.hpp>
 #include <tomurcuk/LinearMemoryAllocator.hpp>
 #include <tomurcuk/LinearMemoryAllocatorTest.hpp>
+#include <tomurcuk/ObjectOwner.hpp>
 
 auto tomurcuk::LinearMemoryAllocatorTest::suite() -> void {
     GREATEST_RUN_TEST(testAllocating);
-    // GREATEST_RUN_TEST(testCursor);
-    // GREATEST_RUN_TEST(testDeallocatingAll);
+    GREATEST_RUN_TEST(testCursor);
+    GREATEST_RUN_TEST(testDeallocatingAll);
 }
 
 // NOLINTBEGIN(cert-err33-c,hicpp-signed-bitwise,modernize-use-std-print) cSpell: disable-line
@@ -39,71 +40,86 @@ auto tomurcuk::LinearMemoryAllocatorTest::testAllocating() -> greatest_test_res 
     GREATEST_PASS();
 }
 
-// auto tomurcuk::LinearMemoryAllocatorTest::testCursor() -> greatest_test_res {
-//     static constexpr auto kCapacity = INT64_C(1000);
-//     static constexpr auto kFirstValue = INT64_C(17);
-//     static constexpr auto kLoopValue = INT64_C(888'888);
-//     static constexpr auto kLastValue = INT64_C(55);
+auto tomurcuk::LinearMemoryAllocatorTest::testCursor() -> greatest_test_res {
+    static constexpr auto kCapacity = INT64_C(1000);
+    static constexpr auto kFirstValue = INT64_C(17);
+    static constexpr auto kLoopValue = INT64_C(888'888);
+    static constexpr auto kLastValue = INT64_C(55);
 
-// tomurcuk::LinearMemoryAllocator linearMemoryAllocator;
-// auto actualCapacity = linearMemoryAllocator.initialize(kCapacity);
+    auto linearMemoryAllocatorResult = LinearMemoryAllocator::create(kCapacity);
 
-// GREATEST_ASSERT(actualCapacity >= kCapacity);
+    GREATEST_ASSERT(linearMemoryAllocatorResult.isSuccess());
 
-// auto memoryAllocator = linearMemoryAllocator.getMemoryAllocator();
-// int64_t *firstNumber;
+    auto linearMemoryAllocator = *linearMemoryAllocatorResult.value();
+    auto memoryAllocator = linearMemoryAllocator.memoryAllocator();
+    auto firstNumberResult = ObjectOwner<int64_t>::create(memoryAllocator);
 
-// GREATEST_ASSERT(memoryAllocator.allocateObject(&firstNumber));
+    GREATEST_ASSERT(firstNumberResult.isSuccess());
 
-// *firstNumber = kFirstValue;
+    auto firstNumber = *firstNumberResult.value();
+    *firstNumber.get() = kFirstValue;
 
-// auto cursor = linearMemoryAllocator.getCursor();
-// for (int64_t *number; memoryAllocator.allocateObject(&number);) {
-//     *number = kLoopValue;
-// }
-// linearMemoryAllocator.deallocateDownTo(cursor);
+    auto cursor = linearMemoryAllocator.cursor();
+    for (;;) {
+        auto numberResult = ObjectOwner<int64_t>::create(memoryAllocator);
+        if (numberResult.isFailure()) {
+            break;
+        }
+        auto number = *numberResult.value();
+        *number.get() = kLoopValue;
+    }
+    linearMemoryAllocator.deallocateDownTo(cursor);
 
-// int64_t *lastNumber;
+    auto lastNumberResult = ObjectOwner<int64_t>::create(memoryAllocator);
 
-// GREATEST_ASSERT(memoryAllocator.allocateObject(&lastNumber));
+    GREATEST_ASSERT(lastNumberResult.isSuccess());
 
-// *lastNumber = kLastValue;
+    auto lastNumber = *lastNumberResult.value();
+    *lastNumber.get() = kLastValue;
 
-// GREATEST_ASSERT_EQ_FMT(kFirstValue, *firstNumber, "%" PRId64);
-// GREATEST_ASSERT_EQ_FMT(kLastValue, *lastNumber, "%" PRId64);
+    GREATEST_ASSERT_EQ_FMT(kFirstValue, *firstNumber.get(), "%" PRId64);
+    GREATEST_ASSERT_EQ_FMT(kLastValue, *lastNumber.get(), "%" PRId64);
 
-// memoryAllocator.deallocateObject(lastNumber);
-// memoryAllocator.deallocateObject(firstNumber);
-// linearMemoryAllocator.destroy();
+    lastNumber.destroy(memoryAllocator);
+    firstNumber.destroy(memoryAllocator);
+    linearMemoryAllocator.destroy();
 
-// GREATEST_PASS();
-// }
+    GREATEST_PASS();
+}
 
-// auto tomurcuk::LinearMemoryAllocatorTest::testDeallocatingAll() -> greatest_test_res {
-//     static constexpr auto kCapacity = INT64_C(1000);
+auto tomurcuk::LinearMemoryAllocatorTest::testDeallocatingAll() -> greatest_test_res {
+    static constexpr auto kCapacity = INT64_C(1000);
 
-// tomurcuk::LinearMemoryAllocator linearMemoryAllocator;
-// auto actualCapacity = linearMemoryAllocator.initialize(kCapacity);
+    auto linearMemoryAllocatorResult = LinearMemoryAllocator::create(kCapacity);
 
-// GREATEST_ASSERT(actualCapacity >= kCapacity);
+    GREATEST_ASSERT(linearMemoryAllocatorResult.isSuccess());
 
-// auto memoryAllocator = linearMemoryAllocator.getMemoryAllocator();
-// auto maxAllocations = INT64_C(0);
-// for (int64_t *number; memoryAllocator.allocateObject(&number); maxAllocations++) {
-// }
+    auto linearMemoryAllocator = *linearMemoryAllocatorResult.value();
+    auto memoryAllocator = linearMemoryAllocator.memoryAllocator();
+    auto maxAllocations = INT64_C(0);
+    for (;; maxAllocations++) {
+        auto numberResult = ObjectOwner<int64_t>::create(memoryAllocator);
+        if (numberResult.isFailure()) {
+            break;
+        }
+    }
 
-// GREATEST_ASSERT(maxAllocations > 0);
+    GREATEST_ASSERT(maxAllocations > 0);
 
-// linearMemoryAllocator.deallocateAll();
-// auto newAllocations = INT64_C(0);
-// for (int64_t *number; memoryAllocator.allocateObject(&number); newAllocations++) {
-// }
+    linearMemoryAllocator.deallocateAll();
+    auto newAllocations = INT64_C(0);
+    for (;; newAllocations++) {
+        auto numberResult = ObjectOwner<int64_t>::create(memoryAllocator);
+        if (numberResult.isFailure()) {
+            break;
+        }
+    }
 
-// GREATEST_ASSERT_EQ_FMT(maxAllocations, newAllocations, "%" PRId64);
+    GREATEST_ASSERT_EQ_FMT(maxAllocations, newAllocations, "%" PRId64);
 
-// linearMemoryAllocator.destroy();
+    linearMemoryAllocator.destroy();
 
-// GREATEST_PASS();
-// }
+    GREATEST_PASS();
+}
 
 // NOLINTEND(cert-err33-c,hicpp-signed-bitwise,modernize-use-std-print) cSpell: disable-line

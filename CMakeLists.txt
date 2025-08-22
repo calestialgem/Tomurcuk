@@ -131,6 +131,7 @@ tomurcukDefinePackage(data
 tomurcukDefinePackage(test
     PACKAGE_DEPENDENCIES
         memory
+        data
     CUSTOM_DEPENDENCIES
         greatest
 )
