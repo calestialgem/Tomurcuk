@@ -4,7 +4,6 @@
 #include <tomurcuk/MemoryAllocator.hpp>
 #include <tomurcuk/Result.hpp>
 #include <tomurcuk/Results.hpp>
-#include <tomurcuk/Status.hpp>
 
 namespace tomurcuk {
     template<typename Object>
